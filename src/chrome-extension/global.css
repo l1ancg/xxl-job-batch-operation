@@ -1,0 +1,7 @@
+/* 只导入 utilities，不导入 base（避免重置页面默认样式） */
+@tailwind utilities;
+
+/* 可选：添加必要的 base 样式，但限定在 xxl- 前缀下 */
+.xxl-scope {
+  /* 这里可以添加作用域样式 */
+}
