@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 检出代码
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. 安装 pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # 3. 安装 Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      # 4. 安装依赖
+      - name: Install dependencies
+        run: pnpm install
+
+      # 5. 构建
+      - name: Build
+        run: pnpm run build
+
+      # 6. 打包成 zip
+      - name: Zip release
+        run: |
+          cd dist
+          zip -r ../xxl-job-batch-operation.zip .
+          cd ..
+
+      # 7. 发布 Release
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: xxl-job-batch-operation.zip
+          generate_release_notes: true
