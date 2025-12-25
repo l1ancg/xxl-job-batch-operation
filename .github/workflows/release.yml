@@ -16,35 +16,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. 安装 pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      # 3. 安装 Node.js
+      # 2. 安装 Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
+          cache: 'npm'
 
-      # 4. 安装依赖
+      # 3. 安装依赖
       - name: Install dependencies
-        run: pnpm install
+        run: npm ci
 
-      # 5. 构建
+      # 4. 构建
       - name: Build
-        run: pnpm run build
+        run: npm run build
 
-      # 6. 打包成 zip
+      # 5. 打包成 zip
       - name: Zip release
         run: |
           cd dist
           zip -r ../xxl-job-batch-operation.zip .
           cd ..
 
-      # 7. 发布 Release
+      # 6. 发布 Release
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
